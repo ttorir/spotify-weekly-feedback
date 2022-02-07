@@ -16,11 +16,10 @@ import ast
 
 questions_list = [['q1','dennys parking lot','cheesecake factory bathroom'],['q2','screaming crying puking','🥰🥰🥰'],['q3','i never heard this before','forever favorite']]
 for question in questions_list:
-    id_val = WeeklySliders.objects.count()
     does_this_exist = WeeklySliders.objects.filter(form_field = question[0]).exists()
     if not does_this_exist:
-        a = WeeklySliders(week_id = 0, form_field = question[0], option_1 = question[1], option_2= question[2], added_on=str(datetime.now()))
-        a = a.save()
+        b = WeeklySliders(week_id = 0, form_field = question[0], option_1 = question[1], option_2= question[2], added_on=str(datetime.now()))
+        b = b.save()
 
 
 #def index(request):
@@ -200,3 +199,26 @@ class weeklyFeedbackView(View):
         return render(request, "songFocus.html")
     #return render(request, "songFocus.html")
     #return HttpResponse("Hello, world. You're at the weeklyFeedback index.")
+
+active_playlist = pd.read_csv('https://raw.githubusercontent.com/ttorir/spotify-wrapped-weekly-public/main/active.csv')
+for idx, row in active_playlist.iterrows():
+    num_skipped = 0
+    if PlaylistSong.objects.filter(track_name = row['track_name'], added_by=row['added_by']).exists():
+       num_skipped +=1
+    else:
+        p = PlaylistSong(track_id=PlaylistSong.objects.count(),
+                        track_name=row['track_name'],
+                        track_artists=row['track_artists'],
+                        artist_genres=row['artist_genres'],
+                        artist_popularity=row['artist_popularity'],
+                        track_album=row['track_album'],
+                        track_duration=row['track_duration'],
+                        album_release_yyyy=row['album_release:yyyy'],
+                        album_release_mm = row['album_release:mm'],
+                        album_release_dd = row['album_release:dd'],
+                        artist_image=row['artist_image'],
+                        track_image=row['track_image'],
+                        added_by=row['added_by'],
+                        added_at=row['added_at']
+                        )
+        p.save()

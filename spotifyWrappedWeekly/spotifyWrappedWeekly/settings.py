@@ -15,17 +15,17 @@ from pathlib import Path
 from glob import glob
 
 
-PROJECT_ROOT   =   os.path.join(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STATIC_ROOT  =   os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 
 #  Add configuration for static files storage using whitenoise
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -63,7 +63,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'spotifyWrappedWeekly.urls'
 
-TEMPLATE_DIR = os.path.join(BASE_DIR, "templates/") 
+print('base_dir ', BASE_DIR)
+TEMPLATE_DIR = BASE_DIR + "/templates/" 
+
 
 TEMPLATES = [
     {
@@ -90,7 +92,7 @@ WSGI_APPLICATION = 'spotifyWrappedWeekly.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': PROJECT_ROOT + "/db.sqlite3",
     }
 }
 
@@ -129,11 +131,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = 'weeklyFeedback/static/'
 
 STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, 'weeklyFeedback/static/'),
-   os.path.join(PROJECT_ROOT, 'static'),
+   #os.path.join(BASE_DIR, 'weeklyFeedback/static/'),
+   os.path.join(PROJECT_ROOT, 'weeklyFeedback/static'),
 ]
 
 # Default primary key field type
@@ -151,17 +153,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'weeklyFeedback'
 ]
+ECRET_KEY = os.environ.get('SECRET_KEY')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+#import dj_database_url 
+#prod_db  =  dj_database_url.config(conn_max_age=500)
+#DATABASES['default'].update(prod_db)
 
-MIDDLEWARE = [
-   'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-import dj_database_url 
-prod_db  =  dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(prod_db)
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'spotify-wrapped-feedback.herokuapp.com','174.102.141.58']
