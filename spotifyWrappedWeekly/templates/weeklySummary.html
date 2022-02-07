@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="basic-background" style="overflow: hidden;">
+    <br> <br> <br>  
+    {% for idx, row in sorted_images.iterrows %}
+    <div class='either_or'>
+        <div class='option_1'>
+            {{row.option_1}}
+        </div> 
+        <div class='vs'>
+            vs
+        </div> 
+        <div class='option_1'>
+            {{row.option_2}}
+        </div> 
+    </div><br>
+    <div class='track_rank'>
+        {% for track_image in row.list_of_images %}
+            <img class='weeklyRank' src={{track_image}}>
+        {% endfor %}
+    </div><br>  
+    {% endfor %}
+</div><br> 
+
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="basic-background">
+    <div class="slideshow-container">
+        <div class="mySlides" style="flex-direction: column;">
+            <br><br>
+            <div class="formInput">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="usernameEntry" style="flex-direction: column;">
+                        
+                        <label for="username"><code class="codeFormat">reviewed by: </code></label><br>
+                        {% if username %}
+                            <input id="username" type="text" name="username" maxlength="100" value={{username}} class ='usernameBox'required>
+                        {% else %}
+                            <input id="username" type="text" name="username" maxlength="100" class ='usernameBox' required>
+                        {% endif %}
+                    </div><br><br>
+                    <div class="trackBox">
+                        {% if previous_answer %}
+                            <img src={{this_song.track_image}} class="trackImage" style="border:5px solid turquoise"><br>
+                        {% else %}
+                            <img src={{this_song.track_image}} class="trackImage"><br>
+                        {% endif %}
+                    </div>
+                    <div class="trackInfo">
+                        <span style="font-size:2vmin;"><b>{{this_song.track_name}}</b></span><br>
+                        {{formatted_artists}}
+                    </div><br>
+                    {% for question in weekly_slider_qs %}
+                        <div class="sliderResponseContainer">
+                            <div class="sliderResponse left">
+                                {{question.option_1}}
+                            </div>
+                            <div class="slidecontainer">                                
+                                {% if previous_answer %}
+                                    {% if question.form_field == 'q1' %}
+                                        <input type="range" min="1" max="100" value="{{previous_answer.q1}}" class="slider" id="myRange" name={{question.form_field}}>
+                                    {% elif question.form_field == 'q2' %}
+                                        <input type="range" min="1" max="100" value="{{previous_answer.q2}}" class="slider" id="myRange" name={{question.form_field}}>
+                                    {% elif question.form_field == 'q3' %}
+                                        <input type="range" min="1" max="100" value="{{previous_answer.q3}}" class="slider" id="myRange" name={{question.form_field}}>
+                                    {% endif %}
+                                {% else %}
+                                    <input type="range" min="1" max="100" value="50" class="slider" id="myRange" name={{question.form_field}}>
+                                {% endif %}
+                            </div>
+                            <div class="sliderResponse right">
+                                {{question.option_2}}
+                            </div>
+                        </div><br> <br>
+                    {% endfor %}
+                    
+                    <input id="current_song_id"style="display: none;"  type="text" name="curr_track_id" maxlength="100" value={{this_song.track_id}}>
+                    
+                    <div class="usernameEntry">
+                        <input class="submitButton" type="submit" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            <div  style="display: none;">
+                <input id="current_song_id"  type="text" name="curr_track_id" maxlength="100" value={{this_song.track_id}}>
+                {% if username %}
+                    <input id="username" type="text" name="username" maxlength="100" value={{username}} >
+                {% endif %}
+            </div>
+            <input type="submit" value="&#10094;" class="prev" name="prev">
+        </form>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div  style="display: none;">
+                <input id="current_song_id"  type="text" name="curr_track_id" maxlength="100" value={{this_song.track_id}}>
+                {% if username %}
+                    <input id="username" type="text" name="username" maxlength="100" value={{username}} >
+                {% endif %}
+            </div>
+            <input type="submit" value="&#10095;" class="next" name="next">
+        </form>
+        </div>
+        <br>
+        
+        
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+
+
+        var slideIndex = 1;
+        showSlides(slideIndex);
+        
+        function plusSlides(n) {
+          showSlides(slideIndex += n);
+        }
+        
+        function currentSlide(n) {
+          showSlides(slideIndex = n);
+        }
+        
+        function showSlides(n) {
+          var i;
+          var slides = document.getElementsByClassName("mySlides");
+          var dots = document.getElementsByClassName("dot");
+          if (n > slides.length) {slideIndex = 1}    
+          if (n < 1) {slideIndex = slides.length}
+          for (i = 0; i < slides.length; i++) {
+              slides[i].style.display = "none";  
+          }
+          for (i = 0; i < dots.length; i++) {
+              dots[i].className = dots[i].className.replace(" active", "");
+          }
+          slides[slideIndex-1].style.display = "block";  
+          dots[slideIndex-1].className += " active";
+        }
+        </script>
+</div>
+{% endblock %}

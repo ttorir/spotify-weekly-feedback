@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="basic-background">
+    <div style="margin: 5%;">
+        <table class="userTable">
+            <tr>
+                <th> </th>
+                <th>Track</th>
+                <th>Artist(s)</th>
+                <th>
+                    <div class='either_or'>
+                        <div class='option_1'>
+                            {{q1.option_1}}
+                        </div> 
+                        <div class='vs'>
+                            vs
+                        </div> 
+                        <div class='option_1'>
+                            {{q1.option_2}}
+                        </div> 
+                    </div>
+                </th>
+                <th>
+                    <div class='either_or'>
+                        <div class='option_1'>
+                            {{q2.option_1}}
+                        </div> 
+                        <div class='vs'>
+                            vs
+                        </div> 
+                        <div class='option_1'>
+                            {{q2.option_2}}
+                        </div> 
+                    </div>
+                </th>
+                <th>
+                    <div class='either_or'>
+                        <div class='option_1'>
+                            {{q3.option_1}}
+                        </div> 
+                        <div class='vs'>
+                            vs
+                        </div> 
+                        <div class='option_1'>
+                            {{q3.option_2}}
+                        </div> 
+                    </div>
+                </th>
+            </tr>
+            {% for idx, row in formatted_df.iterrows %}
+            <tr>
+                <td> <img src={{ row.track_image }} width="150px"> </td>
+                <td> {{ row.track_title }} </td>
+                <td> {{ row.formatted_artist }} </td>
+                <td> 
+                    <div class="bar_bg">
+                        {% if row.q1 > 50 %}
+                            <div style="width:{{ row.q1 }}%;" class="bar_fill">{{ row.q1 }}</div> 
+                        {% else %}
+                            <div style="width:{{ row.q1 }}%; background-color:pink;" class="bar_fill">{{ row.q1 }}</div>
+                        {% endif %} 
+                    </div>
+                </td>
+                <td> 
+                    <div class="bar_bg">
+                        {% if row.q2 > 50 %}
+                            <div style="width:{{ row.q2 }}%;" class="bar_fill">{{ row.q2 }}</div> 
+                        {% else %}
+                            <div style="width:{{ row.q2 }}%; background-color:pink;" class="bar_fill">{{ row.q2 }}</div>
+                        {% endif %}  
+                    </div>
+                </td>
+                <td> 
+                    <div class="bar_bg">
+                        {% if row.q3 > 50 %}
+                            <div style="width:{{ row.q3 }}%;" class="bar_fill">{{ row.q3 }}</div> 
+                        {% else %}
+                            <div style="width:{{ row.q3 }}%; background-color:pink;" class="bar_fill">{{ row.q3 }}</div>
+                        {% endif %} 
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

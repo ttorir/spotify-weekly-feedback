@@ -1,0 +1,277 @@
+:root {
+  --accent_1: #36aaaa;
+  --accent_1_low_opcaity:  #36aaaab6;
+  --accent_2: #df927e;
+  --accent_3: #83e283;
+  --accent_4: #e6e480;
+  --accent_5: #c184c7;
+  --accent_6: #7062a5;
+}
+.basic-background {
+    background-color: rgb(57, 57, 71);
+    height: 96vh;
+    width: 100vw;
+    overflow-y: scroll;
+}
+.nav-link{
+    color: aliceblue;
+}
+
+* {box-sizing: border-box}
+body {
+    font-family: Verdana, sans-serif; 
+    margin:0
+}
+
+.mySlides {
+    display: none; 
+    width: 50%;
+    margin: 0 auto;
+}
+.trackBox{
+  width:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.trackImage {
+  width: 25vh;
+  height: 25vh;
+  box-shadow: 8px 8px 8px #0000009d;
+  /*margin-left: 30%;*/
+}
+
+/* Slideshow container */
+.slideshow-container {
+  width: 80vw;
+  position: relative;
+  margin: auto;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  background-color: transparent;
+  border: 2px solid turquoise;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 8px;
+  user-select: none;
+  text-decoration: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+
+.trackInfo {
+    margin: 1% !important;
+    color: #f2f2f2;
+    font-size: 1.5vh;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    text-shadow: 4px 4px 8px #00000052;
+}
+.usernameBox{
+  background-color: transparent;
+  border-radius: 8px;
+  border: 2px solid turquoise;
+  color: aliceblue;
+  font-family: 'Courier New', Courier, monospace;
+}
+.submitButton{
+  background-color: transparent;
+  border-radius: 8px;
+  border: 2px solid turquoise;
+  color: aliceblue;
+  font-family: 'Courier New', Courier, monospace;
+}
+.submitButton:hover{
+  background-color: rgba(64, 224, 208, 0.411);
+
+}
+
+.codeFormat{
+  color: aliceblue;
+  font-family: 'Courier New', Courier, monospace;
+}
+.usernameEntry{
+  width: 80%;
+  margin-left: 10%;
+  text-align: center;
+  align-content: center;
+  font-size: 1.5vh;
+}
+.formInput{
+    position: relative;
+    margin: 1%;
+    display: block;
+    align-content: center;
+}
+.formButton{
+    border: 2px solid pink;
+    border-radius: 8px;
+    background-color: transparent;
+    color: white;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+  background-color: #717171;
+}
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px}
+}
+
+.slidecontainer {
+  width: 70%;
+  margin: 0px;
+  position: relative;
+  margin: auto;
+  vertical-align: middle;
+}
+  
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  
+  display: flex;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: turquoise;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: turquoise;
+  cursor: pointer;
+}
+.sliderResponseContainer{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.sliderResponse.left, .sliderResponse.right{
+  font-family: 'Courier New', Courier, monospace;
+  color: aliceblue;
+  text-align: center;
+  margin-right: 1%;
+  width: 14%;
+  font-size: 1.5vh;
+  overflow-wrap: break-word;
+  position: relative;
+  margin: auto;
+  vertical-align: middle;
+}
+
+.sliderResponse.right{
+  margin-right: 0%;
+  margin-left: 1%;
+}
+.userTable {
+  font-family: 'Courier New', Courier, monospace;
+  color: aliceblue;
+  width: 85vw;
+  font-size: 1.5vh;
+  text-align: center;
+  display: flex;
+  align-content: center;
+}
+.either_or{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  font-family: 'Courier New', Courier, monospace;
+  color: aliceblue;
+  text-align: center;
+}
+.option_1, .option_2 {
+  
+  width: 40%;
+  font-size: 100%;
+  overflow-wrap: break-word;
+  position: relative;
+  margin: auto;
+  vertical-align: middle;
+}
+.vs{
+  width: 20%;
+  margin: 0px;
+  position: relative;
+  margin: auto;
+  vertical-align: middle;
+}
+.bar_fill{
+  color: navy;
+  background-color: rgba(64, 224, 208, 0.76);
+}
+.bar_bg{
+  background-color: rgba(240, 248, 255, 0.568);
+}
+.weeklyRank{
+  max-height: 15vh;
+}
+.track_rank{
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  font-family: 'Courier New', Courier, monospace;
+  vertical-align: middle;
+  overflow-y: scroll;
+}
+

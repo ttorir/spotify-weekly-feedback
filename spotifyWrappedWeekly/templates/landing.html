@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="basic-background">
+    <div style="height:99vh; width:99vw; display: flex;align-items:center; justify-content: center; vertical-align: middle;">
+        <div class="formInput" style="display: flex;align-items:center; justify-content: center; vertical-align: middle;">
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="usernameEntry" style="flex-direction: column; display: flex; width: 60%; margin-left: 20%; align-items: center;justify-content: center; vertical-align: middle;">
+                    <label for="username"><code class="codeFormat" style="font-size:2vh">hello! thank you for visiting! please enter a username:</code></label><br>
+                    <code class="codeFormat" style="font-size:1.2vh">(this doesn't have to be your name, just unique (when2meet rules))</code><br><br>
+                    {% if username %}
+                        <input id="username" type="text" name="username" value={{username}} maxlength="100" class ='usernameBox' style="width: 20vw"><br><br>
+                    {% else %}
+                        <input id="username" type="text" name="username" maxlength="100" class ='usernameBox' style="width: 20vw"><br><br>
+                    {% endif %}
+                    <input class="submitButton" type="submit" value="Submit">
+                </div> <br><br>
+                
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
