@@ -13,7 +13,6 @@ from os import listdir
 from os.path import isfile, join
 import ast
 
-
 questions_list = [['q1','dennys parking lot','cheesecake factory bathroom'],['q2','screaming crying puking','🥰🥰🥰'],['q3','i never heard this before','forever favorite']]
 for question in questions_list:
     does_this_exist = WeeklySliders.objects.filter(form_field = question[0]).exists()
@@ -41,7 +40,7 @@ def format_artists(playlist):
 
 class weeklySummaryView(View):
     def get(self, request, *args, **kwargs):
-        all_song_objects = PlaylistSong.objects.all()
+        all_song_objects = PlaylistSongs.objects.all()
         formatted_df = pd.DataFrame(columns=['track_image','track_title','formatted_artist','q1','q2','q3'])
         for song in all_song_objects:
             access_user_review =  SongReview.objects.filter(track_id=song.track_id)
@@ -73,7 +72,7 @@ class weeklySummaryView(View):
 class userSummaryView(View):
     def get(self, request, *args, **kwargs):
         username = request.session['username']
-        all_song_objects = PlaylistSong.objects.all()
+        all_song_objects = PlaylistSongs.objects.all()
         formatted_df = pd.DataFrame(columns=['track_image','track_title','formatted_artist','q1','q2','q3'])
         for song in all_song_objects:
             access_user_review =  SongReview.objects.filter(username = username,track_id=song.track_id)
@@ -108,22 +107,26 @@ class landingPageView(View):
 class weeklyFeedbackView(View):
 
     def get(self, request, *args, **kwargs):
-        this_song = PlaylistSong.objects.get(track_id=int(0))
+        this_song = PlaylistSongs.objects.get(track_id=int(0))
         curr_playlist = format_artists(active_playlist)
         context = {
             'this_song':this_song,
             'formatted_artists':format_artist_list(this_song.track_artists),
             'weekly_slider_qs':WeeklySliders.objects.all(),
+            'song_count':'1 / '+str(PlaylistSongs.objects.count()),
         }
         if 'username' in request.session:
             context['username'] = request.session['username']
+            if SongReview.objects.filter(username = request.session['username'],track_id=0).exists():
+                context['previous_answer'] = SongReview.objects.filter(username = request.session['username'],track_id=0).last()
+                
         return render(request, "songFocus.html", context)
 
     def post(self, request, *args, **kwargs):
         # create a form instance and populate it with data from the request:
         weekly_slider_qs = WeeklySliders.objects.all()
         curr_playlist = format_artists(active_playlist)
-        highest_task_id = PlaylistSong.objects.count() - 1
+        highest_task_id = PlaylistSongs.objects.count() - 1
         if request.POST.get("prev"):
             form = ButtonForm(request.POST)
             curr_track_id = int(form['curr_track_id'].value())
@@ -131,15 +134,15 @@ class weeklyFeedbackView(View):
                 next_song_num = int(curr_track_id)-1
             else:
                 next_song_num = highest_task_id
-            next_song = PlaylistSong.objects.get(track_id=next_song_num)
+            next_song = PlaylistSongs.objects.get(track_id=next_song_num)
             context = {
                 'this_song':next_song,
                 'formatted_artists':format_artist_list(next_song.track_artists),
                 'username':request.POST.get("username"),
                 'weekly_slider_qs':weekly_slider_qs,
+                'song_count':str(int(next_song_num)+1)+' / '+str(PlaylistSongs.objects.count()),
             }
             if SongReview.objects.filter(username = form['username'].value(),track_id=next_song_num).exists():
-                print('previous answer exists')
                 context['previous_answer'] = SongReview.objects.filter(username = form['username'].value(),track_id=next_song_num).last()
                   
             return render(request, "songFocus.html", context) 
@@ -150,15 +153,15 @@ class weeklyFeedbackView(View):
                 next_song_num = int(curr_track_id)+1
             else:
                 next_song_num = 0
-            next_song = PlaylistSong.objects.get(track_id=next_song_num)
+            next_song = PlaylistSongs.objects.get(track_id=next_song_num)
             context = {
                 'this_song':next_song,
                 'formatted_artists':format_artist_list(next_song.track_artists),
                 'username':request.POST.get("username"),
                 'weekly_slider_qs':weekly_slider_qs,
+                'song_count':str(int(next_song_num)+1)+' / '+str(PlaylistSongs.objects.count()),
             }
             if SongReview.objects.filter(username = form['username'].value(),track_id=next_song_num).exists():
-                print('previous answer exists')
                 context['previous_answer'] = SongReview.objects.filter(username = form['username'].value(),track_id=next_song_num).last()
                 
             return render(request, "songFocus.html", context) 
@@ -173,7 +176,6 @@ class weeklyFeedbackView(View):
                     this_song_review.q1 =form['q1'].value()
                     this_song_review.q2 =form['q2'].value()
                     this_song_review.q3 =form['q3'].value()
-                    print('review was updated')
                 else:
                     this_song_review = SongReview(track_id=curr_track_id, username=form['username'].value(), q1=form['q1'].value(),q2=form['q2'].value(),q3=form['q3'].value())
                 this_song_review.save()
@@ -181,15 +183,15 @@ class weeklyFeedbackView(View):
                     next_song_num = int(curr_track_id)+1
                 else:
                     next_song_num = 0
-                next_song = PlaylistSong.objects.get(track_id=next_song_num)
+                next_song = PlaylistSongs.objects.get(track_id=next_song_num)
                 context = {
                     'this_song':next_song,
                     'formatted_artists':format_artist_list(next_song.track_artists),
                     'username':request.POST.get("username"),
                     'weekly_slider_qs':weekly_slider_qs,
+                    'song_count':str(int(next_song_num)+1)+' / '+str(PlaylistSongs.objects.count()),
                 }
                 if SongReview.objects.filter(username = form['username'].value(),track_id=next_song_num).exists():
-                    print('previous answer exists')
                     context['previous_answer'] = SongReview.objects.filter(username = form['username'].value(),track_id=next_song_num).last()
                 
                 return render(request, "songFocus.html", context) 
@@ -203,10 +205,12 @@ class weeklyFeedbackView(View):
 active_playlist = pd.read_csv('https://raw.githubusercontent.com/ttorir/spotify-wrapped-weekly-public/main/active.csv')
 for idx, row in active_playlist.iterrows():
     num_skipped = 0
-    if PlaylistSong.objects.filter(track_name = row['track_name'], added_by=row['added_by']).exists():
-       num_skipped +=1
+    if PlaylistSongs.objects.filter(track_name = row['track_name'], added_by=row['added_by']).exists():
+        p = PlaylistSongs.objects.filter(track_name = row['track_name'], added_by=row['added_by']).last()
+        p.track_spotify_id=row['track_id']
+        p.track_src=row['embed_src']
     else:
-        p = PlaylistSong(track_id=PlaylistSong.objects.count(),
+        p = PlaylistSongs(track_id=PlaylistSongs.objects.count(),
                         track_name=row['track_name'],
                         track_artists=row['track_artists'],
                         artist_genres=row['artist_genres'],
@@ -219,6 +223,8 @@ for idx, row in active_playlist.iterrows():
                         artist_image=row['artist_image'],
                         track_image=row['track_image'],
                         added_by=row['added_by'],
-                        added_at=row['added_at']
+                        added_at=row['added_at'],
+                        track_spotify_address=row['track_id'],
+                        track_src=row['embed_src'],
                         )
-        p.save()
+    p.save()

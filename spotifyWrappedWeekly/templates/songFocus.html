@@ -10,24 +10,16 @@
                 <form action="" method="post">
                     {% csrf_token %}
                     <div class="usernameEntry" style="flex-direction: column;">
-                        
                         <label for="username"><code class="codeFormat">reviewed by: </code></label><br>
                         {% if username %}
                             <input id="username" type="text" name="username" maxlength="100" value={{username}} class ='usernameBox'required>
                         {% else %}
                             <input id="username" type="text" name="username" maxlength="100" class ='usernameBox' required>
                         {% endif %}
-                    </div><br><br>
-                    <div class="trackBox">
-                        {% if previous_answer %}
-                            <img src={{this_song.track_image}} class="trackImage" style="border:5px solid turquoise"><br>
-                        {% else %}
-                            <img src={{this_song.track_image}} class="trackImage"><br>
-                        {% endif %}
+                        <br><br><code class="codeFormat">{{song_count}}</code>
                     </div>
-                    <div class="trackInfo">
-                        <span style="font-size:2vmin;"><b>{{this_song.track_name}}</b></span><br>
-                        {{formatted_artists}}
+                    <div class="trackBox">
+                        <iframe src={{this_song.track_src}} style='box-shadow: 8px 8px 8px #0000009d;' width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
                     </div><br>
                     {% for question in weekly_slider_qs %}
                         <div class="sliderResponseContainer">
@@ -57,8 +49,11 @@
                     
                     <div class="usernameEntry">
                         <input class="submitButton" type="submit" value="Submit">
-                    </div>
+                    </div> 
                 </form>
+                <div>
+
+                </div>
             </div>
         </div>
 
