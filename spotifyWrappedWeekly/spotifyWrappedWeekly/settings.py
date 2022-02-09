@@ -90,13 +90,34 @@ WSGI_APPLICATION = 'spotifyWrappedWeekly.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': PROJECT_ROOT + "/db.sqlite3",
     }
 }
+"""
+DATABASES = {
+
+    'default': {
+
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+        'NAME': 'dbenr35li9litn',
+
+        'USER': 'gissoljnisavdo',
+
+        'PASSWORD': 'a4dccca382362ff74095fca2c7fc76ef41e7950d1bcfdf07061aaa05e8a4265d',
+
+        'HOST': 'ec2-23-20-73-25.compute-1.amazonaws.com',
+
+        'PORT': '5432',
+
+    }
+
+}
+
 
 
 # Password validation
@@ -152,5 +173,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #import dj_database_url 
 #prod_db  =  dj_database_url.config(conn_max_age=500)
 #DATABASES['default'].update(prod_db)
-
+"""
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL = '/media/'
+"""
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'spotify-wrapped-feedback.herokuapp.com','174.102.141.58']

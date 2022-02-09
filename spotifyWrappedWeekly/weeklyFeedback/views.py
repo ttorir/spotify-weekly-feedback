@@ -13,14 +13,6 @@ from os import listdir
 from os.path import isfile, join
 import ast
 
-questions_list = [['q1','dennys parking lot','cheesecake factory bathroom'],['q2','screaming crying puking','🥰🥰🥰'],['q3','i never heard this before','forever favorite']]
-for question in questions_list:
-    does_this_exist = WeeklySliders.objects.filter(form_field = question[0]).exists()
-    if not does_this_exist:
-        b = WeeklySliders(week_id = 0, form_field = question[0], option_1 = question[1], option_2= question[2], added_on=str(datetime.now()))
-        b = b.save()
-
-
 #def index(request):
 
 def format_artist_list(artist_list):
@@ -203,6 +195,7 @@ class weeklyFeedbackView(View):
     #return HttpResponse("Hello, world. You're at the weeklyFeedback index.")
 
 active_playlist = pd.read_csv('https://raw.githubusercontent.com/ttorir/spotify-wrapped-weekly-public/main/active.csv')
+
 for idx, row in active_playlist.iterrows():
     num_skipped = 0
     if PlaylistSongs.objects.filter(track_name = row['track_name'], added_by=row['added_by']).exists():
@@ -228,3 +221,11 @@ for idx, row in active_playlist.iterrows():
                         track_src=row['embed_src'],
                         )
     p.save()
+
+questions_list = [['q1','dennys parking lot','cheesecake factory bathroom'],['q2','screaming crying puking','🥰🥰🥰'],['q3','i never heard this before','forever favorite']]
+for question in questions_list:
+    does_this_exist = WeeklySliders.objects.filter(form_field = question[0]).exists()
+    if not does_this_exist:
+        b = WeeklySliders(week_id = 0, form_field = question[0], option_1 = question[1], option_2= question[2], added_on=str(datetime.now()))
+        b = b.save()
+
