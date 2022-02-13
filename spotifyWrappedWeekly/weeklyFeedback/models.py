@@ -88,15 +88,15 @@ class PlaylistSongs(models.Model):
         """
         track_id = models.IntegerField(blank=True, null=True,
                 verbose_name=_("unique_id_for_a_song"))
-        track_name = models.CharField(max_length=200,
+        track_name = models.CharField(max_length=1000,
                 verbose_name=_("track_name"))
-        track_artists = models.CharField(max_length=200,
+        track_artists = models.CharField(max_length=2500,
                 verbose_name=_("track_artists"))
-        artist_genres = models.CharField(max_length=200,
+        artist_genres = models.CharField(max_length=2000,
                 verbose_name=_("artist_genres"))
         artist_popularity = models.CharField(max_length=200,
                 verbose_name=_("artist_popularity"))
-        track_album = models.CharField(max_length=200,
+        track_album = models.CharField(max_length=1000,
                 verbose_name=_("track_album"))
         track_duration = models.IntegerField(blank=True, null=True,
                 verbose_name=_("track_duration"))
@@ -106,15 +106,15 @@ class PlaylistSongs(models.Model):
                 verbose_name=_("year_of_release_MM"))
         album_release_dd = models.IntegerField(blank=True, null=True,
                 verbose_name=_("year_of_release_DD"))
-        artist_image = models.CharField(max_length=5000,
+        artist_image = models.CharField(max_length=5500,
                 verbose_name=_("artist_image"))
         track_image = models.CharField(max_length=5000,
                 verbose_name=_("track_image"))
         added_by = models.CharField(max_length=200,
                 verbose_name=_("added_by"))
-        track_spotify_address = models.CharField(max_length=200,
+        track_spotify_address = models.CharField(max_length=1000,
                 verbose_name=_("track_spotify_id"))
-        track_src = models.CharField(max_length=200,
+        track_src = models.CharField(max_length=1000,
                 verbose_name=_("track_src"))
         added_at = models.CharField(max_length=200,
                 verbose_name=_("date_added"))
