@@ -22,9 +22,9 @@ from typing import List, Dict, Any, Optional, Text, Iterable, Tuple, FrozenSet, 
 from jsonfield import JSONField
 
 # Create your models here.
-class WeeklySliders(models.Model):
-        week_id = models.IntegerField(blank=True, null=True,
-                verbose_name=_("week_question"))
+class weeklysliders(models.Model):
+        #week_id = models.IntegerField(blank=True, null=True,
+        #        verbose_name=_("week_question"))
         form_field = models.CharField(max_length=200,
                 verbose_name=_("algins_this_to_a_form"))
         option_1 = models.CharField(max_length=200,
@@ -44,7 +44,7 @@ class WeeklySliders(models.Model):
         __str__ = __unicode__
 
 
-class WeeklySlidersSuggestion(models.Model):
+class weeklysliderssuggestion(models.Model):
         option_1 = models.CharField(max_length=200,
                 verbose_name=_("option_1"))
         option_2 = models.CharField(max_length=200,
@@ -61,7 +61,7 @@ class WeeklySlidersSuggestion(models.Model):
 
         __str__ = __unicode__
 
-class NameSample(models.Model):
+class namesample(models.Model):
         arbitrary_id = models.IntegerField(blank=True, null=True,
                 verbose_name=_("unique_id_for_a_song"))
         text_entry = models.CharField(max_length=200,
@@ -82,7 +82,7 @@ class NameSample(models.Model):
 
         __str__ = __unicode__
 
-class PlaylistSongs(models.Model):
+class playlistsongs(models.Model):
         """
         Model for each song added to the playlists
         """
@@ -130,7 +130,7 @@ class PlaylistSongs(models.Model):
 
         __str__ = __unicode__
 
-class SongReview(models.Model):
+class songreview(models.Model):
         """
         Review for the Song
         """
@@ -159,3 +159,8 @@ class SongReview(models.Model):
                         }
 
         __str__ = __unicode__
+
+class adminvalues(models.Model):
+        github_csv_address = models.CharField(max_length=800,
+                verbose_name=_("address_of_the_github_csv"))
+        

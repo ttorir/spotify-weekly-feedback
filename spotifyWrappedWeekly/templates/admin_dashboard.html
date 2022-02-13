@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="basic-background">
+{% if username == "tori" %}
+<br><br><br><br>
+<form action="" method="post" style="width: 100vw;">
+    {% csrf_token %}
+    <div class="usernameEntry" style="flex-direction: column;">
+        <label for="playlist_csv_link"><code class="codeFormat">active playlist csv link: </code></label><br><br>
+        {% if active_playlist %}
+            <input type="text" name="playlist_csv_link" maxlength="800" value={{active_playlist}} class ='usernameBox' style="width: 70vw;"required>
+        {% else %}
+            <input type="text" name="playlist_csv_link" maxlength="800" class ='usernameBox' style="width: 70vw;" required>
+        {% endif %}
+        <br><br>
+        <code class="codeFormat">Slider 1: </code></label><br>
+        <code class="codeFormat">Option 1 vs Option 2</code></label><br>
+        {% if q2_option1 %}
+            <input type="text" name="q1_option1" maxlength="800" value="{{q1_option1}}" class ='usernameBox'style="width: 20vw;"required>
+            <input type="text" name="q1_option2" maxlength="800" value="{{q1_option2}}" class ='usernameBox'style="width: 20vw;"required>
+        {% else %}
+            <input type="text" name="q1_option1" maxlength="800" class ='usernameBox' style="width: 20vw;"required>
+            <input type="text" name="q1_option2" maxlength="800" class ='usernameBox' style="width: 20vw;"required>
+        {% endif %}
+        <br><br>
+        <code class="codeFormat">Slider 2: </code></label><br>
+        <code class="codeFormat">Option 1 vs Option 2</code></label><br>
+        {% if q2_option1 %}
+            <input type="text" name="q2_option1" maxlength="800" value="{{q2_option1}}" class ='usernameBox'style="width: 20vw;"required>
+            <input type="text" name="q2_option2" maxlength="800" value="{{q2_option2}}" class ='usernameBox'style="width: 20vw;"required>
+        {% else %}
+            <input type="text" name="q2_option1" maxlength="800" class ='usernameBox' style="width: 20vw;"required>
+            <input type="text" name="q2_option2" maxlength="800" class ='usernameBox' style="width: 20vw;"required>
+        {% endif %}
+        <br><br>
+        <code class="codeFormat">Slider 3: </code></label><br>
+        <code class="codeFormat">Option 1 vs Option 2</code></label><br>
+        {% if q3_option1 %}
+            <input type="text" name="q3_option1" maxlength="800" value="{{q3_option1}}" class ='usernameBox'style="width: 20vw;"required>
+            <input type="text" name="q3_option2" maxlength="800" value="{{q3_option2}}" class ='usernameBox'style="width: 20vw;"required>
+        {% else %}
+            <input type="text" name="q3_option1" maxlength="800" class ='usernameBox' style="width: 20vw;"required>
+            <input type="text" name="q3_option2" maxlength="800" class ='usernameBox' style="width: 20vw;"required>
+        {% endif %}
+    </div>
+    <br><br>
+    <div class="usernameEntry">
+        <input class="submitButton" type="submit" value="Update">
+    </div> 
+</form>
+{% else %}
+<code class="codeFormat">Admin dashboard not supported for this user, sorry.</code>
+{% endif %}
+</div>
+{% endblock %}

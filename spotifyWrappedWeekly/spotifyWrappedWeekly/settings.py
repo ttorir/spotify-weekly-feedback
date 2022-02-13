@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'whitenoise.runserver_nostatic',
-    'weeklyFeedback'
+    'weeklyfeedback'
 ]
 
 MIDDLEWARE = [
@@ -154,11 +154,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'weeklyFeedback/static/'
+STATIC_URL = 'weeklyfeedback/static/'
 
 STATICFILES_DIRS = [
    #os.path.join(BASE_DIR, 'weeklyFeedback/static/'),
-   os.path.join(PROJECT_ROOT, 'weeklyFeedback/static'),
+   os.path.join(PROJECT_ROOT, 'weeklyfeedback/static'),
 ]
 
 # Default primary key field type

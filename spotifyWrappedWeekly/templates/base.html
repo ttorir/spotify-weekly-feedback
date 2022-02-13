@@ -33,6 +33,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'feedback_page' %}" aria-disabled="true">Feedback</a>
                     </li>
+                        {% if username == "tori" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin_dashboard' %}" aria-disabled="true">Backend Updates</a>
+                        </li>
+                        {% endif %}
                     {% endif %}
                 </ul>
             </div>
