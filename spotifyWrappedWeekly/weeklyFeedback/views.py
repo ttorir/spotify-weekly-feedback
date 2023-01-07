@@ -13,7 +13,7 @@ from os import listdir
 from os.path import isfile, join
 import ast
 
-#def index(request):
+## populate database with songs
 
 def format_artist_list(artist_list):
     row_entry = ast.literal_eval(artist_list)
@@ -32,7 +32,7 @@ def format_artists(playlist):
 
 class weeklySummaryView(View):
     def get(self, request, *args, **kwargs):
-        all_song_objects = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 7))).all()
+        all_song_objects = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 700))).all()
         formatted_df = pd.DataFrame(columns=['track_image','track_title','formatted_artist','q1','q2','q3'])
         for song in all_song_objects:
             access_user_review =  songreview.objects.filter(track_id=song.track_id)
@@ -64,7 +64,7 @@ class weeklySummaryView(View):
 class userSummaryView(View):
     def get(self, request, *args, **kwargs):
         username = request.session['username']
-        all_song_objects = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 7))).all()
+        all_song_objects = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 700))).all()
         formatted_df = pd.DataFrame(columns=['track_image','track_title','formatted_artist','q1','q2','q3'])
         for song in all_song_objects:
             access_user_review =  songreview.objects.filter(username = username,track_id=song.track_id)
@@ -87,6 +87,8 @@ class userSummaryView(View):
 
 class landingPageView(View):
     def get(self, request, *args, **kwargs):
+        #for song_object in playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 700))):
+        #    print(str(song_object.track_id) + ' : ' + song_object.track_name)
         context = {}
         if 'username' in request.session:
             context['username'] = request.session['username']
@@ -98,8 +100,8 @@ class landingPageView(View):
 
 class weeklyFeedbackView(View):
     def get(self, request, *args, **kwargs):
-        this_song = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 7))).first()
-        number_of_entries = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 7))).count() - this_song.track_id
+        this_song = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 700))).first()
+        number_of_entries = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 700))).count()
         context = {
             'this_song':this_song,
             'formatted_artists':format_artist_list(this_song.track_artists),
@@ -116,20 +118,16 @@ class weeklyFeedbackView(View):
     def post(self, request, *args, **kwargs):
         # create a form instance and populate it with data from the request:
         weekly_slider_qs = weeklysliders.objects.all()
-        #active_playlist_address = adminvalues.objects.first()
-        #active_playlist = pd.read_csv(active_playlist_address.github_csv_address)
-        #curr_playlist = format_artists(active_playlist)
-        highest_task_id = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 7))).count() - 1
-        first_song_id = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 7))).first()
-        number_of_entries = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 7))).count() - first_song_id.track_id
+        highest_task_id = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 700))).last()
+        first_song_id = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 700))).first()
+        number_of_entries = playlistsongs.objects.filter(added_at__gte=(datetime.now()-timedelta(days = 700))).count()
         if request.POST.get("prev"):
             form = ButtonForm(request.POST)
             curr_track_id = int(form['curr_track_id'].value())
-            
             if curr_track_id > first_song_id.track_id:
                 next_song_num = int(curr_track_id)-1
             else:
-                next_song_num = highest_task_id
+                next_song_num = highest_task_id.track_id
             next_song = playlistsongs.objects.get(track_id=next_song_num)
             context = {
                 'this_song':next_song,
@@ -145,7 +143,7 @@ class weeklyFeedbackView(View):
         elif request.POST.get("next"):
             form = ButtonForm(request.POST)
             curr_track_id = int(form['curr_track_id'].value())
-            if curr_track_id < highest_task_id:
+            if curr_track_id < highest_task_id.track_id:
                 next_song_num = int(curr_track_id)+1
             else:
                 next_song_num = 0
@@ -167,7 +165,7 @@ class weeklyFeedbackView(View):
             if form.is_valid():
                 curr_track_id = int(form['curr_track_id'].value())
                 num_forms = songreview.objects.count()
-                if songreview.objects.filter(track_id=curr_track_id, username=form['username'].value(),reviewed_at__gte=(datetime.now()-timedelta(days = 7))).exists():
+                if songreview.objects.filter(track_id=curr_track_id, username=form['username'].value(),reviewed_at__gte=(datetime.now()-timedelta(days = 700))).exists():
                     this_song_review = songreview.objects.filter(track_id=curr_track_id, username=form['username'].value()).last()
                     this_song_review.q1 =form['q1'].value()
                     this_song_review.q2 =form['q2'].value()
@@ -176,7 +174,7 @@ class weeklyFeedbackView(View):
                 else:
                     this_song_review = songreview(track_id=curr_track_id, username=form['username'].value(), q1=form['q1'].value(),q2=form['q2'].value(),q3=form['q3'].value(),reviewed_at = datetime.now())
                 this_song_review.save()
-                if curr_track_id < highest_task_id:
+                if curr_track_id < highest_task_id.track_id:
                     next_song_num = int(curr_track_id)+1
                 else:
                     next_song_num = 0
@@ -189,7 +187,7 @@ class weeklyFeedbackView(View):
                     'song_count':str(int(next_song_num)+1-first_song_id.track_id)+' / '+str(number_of_entries),
                 }
                 if songreview.objects.filter(username = form['username'].value(),track_id=next_song_num).exists():
-                    context['previous_answer'] = songreview.objects.filter(username = form['username'].value(),track_id=next_song_num,reviewed_at__gte=(datetime.now()-timedelta(days = 7))).last()
+                    context['previous_answer'] = songreview.objects.filter(username = form['username'].value(),track_id=next_song_num,reviewed_at__gte=(datetime.now()-timedelta(days = 700))).last()
                 
                 return render(request, "songFocus.html", context) 
         else:  
@@ -212,12 +210,14 @@ class adminDashboardView(View):
         return render(request, "admin_dashboard.html",context)
     def post(self, request, *args, **kwargs):
         form = adminDashboardForm(request.POST)        
-        active_playlist = pd.read_csv(form['playlist_csv_link'].value())
-        active_playlist_url = adminvalues(github_csv_address=form['playlist_csv_link'].value())
-        active_playlist_url.save()
+        # active_playlist = pd.read_csv(form['playlist_csv_link'].value())
+        active_playlist = pd.read_csv('/Users/roseva1/Desktop/Dashbaord/spotify_project/spotify-weekly-feedback/spotifyWrappedWeekly/staticfiles/music/active_week01.csv')
+        # active_playlist_url = adminvalues.objects.first()
+        # active_playlist_url.github_csv_address=form['playlist_csv_link'].value()
+        # active_playlist_url.save()
         num_skipped = 0
         for idx, row in active_playlist.iterrows():
-            if not playlistsongs.objects.filter(track_name=row['track_name'],added_at__gte=(datetime.now()-timedelta(days = 7))):
+            if not playlistsongs.objects.filter(track_name=row['track_name'],added_at__gte=(datetime.now()-timedelta(days = 700))):
                 if type(row['album_release:mm']) == int:
                     month = row['album_release:mm']
                     day = row['album_release:dd']
@@ -268,15 +268,15 @@ class adminDashboardView(View):
                 context[question_value+'_option2'] = question_object.option_2
                 #print('option 1: ',question_object.option_1)
         return render(request, "admin_dashboard.html",context)
-    """
-    questions_list_1 = [['q1','cheesecake factory bathroom','dennys parking lot'],['q2','me','my evil british twin'],['q3','windows down bop','carpool karaoke']]
-    for question in questions_list_1:
-        does_this_exist = weeklysliders.objects.filter(form_field = question[0],week_id=1).exists()
-        if not does_this_exist:
-            b = weeklysliders(week_id = 1, form_field = question[0], option_1 = question[1], option_2= question[2], added_on=str(datetime.now()))
-            b = b.save()
-        else:
-            b = weeklysliders.objects.filter(form_field = question[0]).last()
-            b.week_id = 1
-            b.save()
-    """
+
+    
+    # questions_list_1 = [['q1','cheesecake factory bathroom','dennys parking lot'],['q2','me','my evil british twin'],['q3','windows down bop','carpool karaoke']]
+    # for question in questions_list_1:
+    #     does_this_exist = weeklysliders.objects.filter(form_field = question[0],week_id=1).exists()
+    #     if not does_this_exist:
+    #         b = weeklysliders(week_id = 1, form_field = question[0], option_1 = question[1], option_2= question[2], added_on=str(datetime.now()))
+    #         b = b.save()
+    #     else:
+    #         b = weeklysliders.objects.filter(form_field = question[0]).last()
+    #         b.week_id = 1
+    #         b.save()

@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 from glob import glob
+import importlib
+import sys
 
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,8 +22,8 @@ STATIC_ROOT  =   os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 
-#  Add configuration for static files storage using whitenoise
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# #  Add configuration for static files storage using whitenoise
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,9 +40,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
+#sys.path.append(BASE_DIR+'/weeklyfeedback')
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,12 +49,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic',
+    # 'whitenoise.runserver_nostatic',
+    # 'django_heroku',
     'weeklyfeedback'
+    
 ]
 
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -65,7 +68,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'spotifyWrappedWeekly.urls'
 
-print('base_dir ', BASE_DIR)
 TEMPLATE_DIR = BASE_DIR + "/templates/" 
 
 
@@ -85,7 +87,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'spotifyWrappedWeekly.wsgi.application'
+# WSGI_APPLICATION = 'spotifyWrappedWeekly.wsgi.application'
 
 
 # Database
@@ -99,24 +101,30 @@ DATABASES = {
 }
 """
 DATABASES = {
-
     'default': {
-
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
-        'NAME': 'd9u48ta6giov2t',
-
-        'USER': 'riwzmptftoiuot',
-
-        'PASSWORD': '93e792ede8f6dbfd189cabb35fb9eb68f0724708edefd6005da48e6af0ebe916',
-
-        'HOST': 'ec2-18-235-114-62.compute-1.amazonaws.com',
-
-        'PORT': '5432',
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': PROJECT_ROOT + "/db.sqlite3",
     }
-
 }
+# DATABASES = {
+
+#     'default': {
+
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+#         'NAME': 'd9u48ta6giov2t',
+
+#         'USER': 'riwzmptftoiuot',
+
+#         'PASSWORD': '93e792ede8f6dbfd189cabb35fb9eb68f0724708edefd6005da48e6af0ebe916',
+
+#         'HOST': 'ec2-18-235-114-62.compute-1.amazonaws.com',
+
+#         'PORT': '5432',
+
+#     }
+
+# }
 
 
 
@@ -178,3 +186,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 """
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '127.0.0.1', 'spotify-wrapped-feedback.herokuapp.com','174.102.141.58']
+
+# import django_heroku
+# django_heroku.settings(locals())

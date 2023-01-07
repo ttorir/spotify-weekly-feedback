@@ -1,1 +1,2 @@
-web: gunicorn spotifyWrappedWeekly.wsgi --log-file -
+web: gunicorn --chdir spotifyWrappedWeekly spotifyWrappedWeekly.wsgi 
+web: gunicorn --pythonpath spotifyWrappedWeekly spotifyWrappedWeekly.wsgi 

@@ -11,7 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 #from whitenoise.django import DjangoWhiteNoise
-from whitenoise import WhiteNoise
+# from whitenoise import WhiteNoise
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'spotifyWrappedWeekly.settings')
 
@@ -19,7 +19,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'spotifyWrappedWeekly.settings')
 
 
 #application = DjangoWhiteNoise(application)
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "prompt.settings")
+#os.environ.setdefault("DJANGO_SETTINGS_MODULE", "prompt.settings")
 
 #from whitenoise.django import DjangoWhiteNoise
 
